@@ -1,10 +1,10 @@
-NCNNSum(15)
+NCNNSum()
 
 // algorithm for showing that:
-// "every natural number can be obtained as sum of non-composite natural numbers (NCNNs)"
+// "every natural number can be obtained also as sum of non-composite natural numbers (NCNNs) of some kind"
 function NCNNSum(limit=NaN){
   var ncnn=[]
-  for(let n of stepper(0,limit)){
+  for(let n of stepper(1,limit)){
     if(isNonCompositeNaturalNumber(n))ncnn.push(n)
     let dec=n
     let add=[]
@@ -14,7 +14,6 @@ function NCNNSum(limit=NaN){
         add.push(ncnn[i])
       }
     }
-    add.push(0)
     if(n!=sum(add)){
       print('wrong sum')
       break
