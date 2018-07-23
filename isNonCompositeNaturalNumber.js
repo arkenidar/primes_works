@@ -1,4 +1,4 @@
-let limit=20
+let limit=23
 print('non-composite numbers')
 for(let n of nonCompositeNaturalNumbersGenerator(0,limit)){
   print(n)
@@ -6,7 +6,7 @@ for(let n of nonCompositeNaturalNumbersGenerator(0,limit)){
 
 function isNonCompositeNaturalNumber(n){
   let prime=true
-  for(let i of stepper(0,n)){
+  for(let i of stepper(0,n-1)){
     if(n%i==0 && i!=1){
       prime=false
       break
