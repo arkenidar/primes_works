@@ -1,10 +1,5 @@
-// (optionally) stop when encountering
-// given limit in stepping (don't stop stepping otherwise)
-let limit_to_stop_at=15
-if(typeof window=='undefined')
-  findSum(limit_to_stop_at)
 
-// added stop() to prevent process from closing
+findSum(15)
 busyStop()
 
 // NCNNs stands for "non-composite natural numbers"
