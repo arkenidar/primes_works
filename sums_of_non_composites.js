@@ -1,11 +1,11 @@
 NCNNSum(10)
 
 // algorithm for showing that:
-/* "every natural number >=3 can be obtained 
+/* "every natural number >1 can be obtained 
  as sum of non-composite natural numbers (NCNNs) of some kind" */
 function NCNNSum(limit=NaN){
-  var ncnn=[1,2]
-  for(let n of stepper(3,limit)){
+  var ncnn=[1]
+  for(let n of stepper(2,limit)){
     if(isNonCompositeNaturalNumber(n))
       ncnn.push(n)
     let dec=n
