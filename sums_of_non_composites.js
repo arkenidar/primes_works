@@ -1,10 +1,11 @@
 // (optionally) stop when encountering
 // given limit in stepping (don't stop stepping otherwise)
 let limit_to_stop_at=15
-findSum(limit_to_stop_at)
+if(typeof window=='undefined')
+  findSum(limit_to_stop_at)
 
 // added stop() to prevent process from closing
-stop()
+busyStop()
 
 // NCNNs stands for "non-composite natural numbers"
 
@@ -39,7 +40,7 @@ etcetera
  I highlight this given the definition of primes starting from 2.
  */
 function findSum(limit=NaN,filterFunction=isNonCompositeNaturalNumber){
-  print('limit set to',limit)
+  print('findSum() limit set to',limit)
   // natural numbers filtered by the filter function
   // (default: non-composite natural numbers)
   let start=0
@@ -105,7 +106,10 @@ function* stepper(start=0, limit=NaN, step=1){
 }
 
 function print(...args){
-  console.log(...args)
+  if(typeof p!='undefined')
+    p(...args)
+  else if(typeof console!='undefined')
+    console.log(...args)
 }
 
 function sum(array){
@@ -113,4 +117,10 @@ function sum(array){
   return array.reduce(reducer)
 }
 
-function stop(){ print('program is stopped'); while(true){} }
+// stop for preventing closing a process window
+function busyStop(){
+  // if there is browser window there is no need to prevent closing
+  if(typeof window!='undefined') return
+  print('program is stopped');
+  while(true){}
+}

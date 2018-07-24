@@ -1,0 +1,17 @@
+<!doctype html>
+<meta charset="utf8">
+
+<title>demo of sums_of_non_composites.js</title>
+<div>demo of sums_of_non_composites.js</div>
+<input id="number" type="number" value="15"><button onclick="document.all.print_output.innerHTML='';findSum(parseInt(document.all.number.value))">findSum()</button>
+
+<!-- printing -->
+<div id="print_output"></div>
+<script>
+function p(...params){
+    document.querySelector('#print_output').innerHTML+=params.join(' ')+'<br>'
+}
+</script>
+
+<!--the program to run -->
+<script src="sums_of_non_composites.js"></script>
