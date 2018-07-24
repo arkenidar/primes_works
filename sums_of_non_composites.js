@@ -1,4 +1,6 @@
-NCNNSum(10)
+// (optionally) stop encountering given limit in stepping (don't stop otherwise)
+let limit_to_stop_at=10
+NCNNSum(limit_to_stop_at) // NCNNs stands for "non-composite natural numbers"
 
 // algorithm implementation for showing that:
 /* "every natural number >1 can be obtained 
@@ -10,7 +12,8 @@ NCNNSum(10)
  I highlight this given the definition of primes starting from 2.
  */
 function NCNNSum(limit=NaN){
-  var ncnn=[1]
+  let ncnn=[1]
+  // (optionally) stop encountering given limit in stepping (don't stop otherwise)
   for(let n of stepper(2,limit)){
     if(isNonCompositeNaturalNumber(n))
       ncnn.push(n)
@@ -18,10 +21,12 @@ function NCNNSum(limit=NaN){
     let add=[]
     for(let i=ncnn.length-2;i>=0;i--){
       while(ncnn[i]<=dec && dec!=0){
+        // decrement to find the numbers to sum up
         dec-=ncnn[i]
         add.push(ncnn[i])
       }
     }
+    // safety check (optional)
     if(n!=sum(add)){
       print('wrong sum')
       break
@@ -30,6 +35,7 @@ function NCNNSum(limit=NaN){
   }
 }
 
+// like: isPrime but includes 0 and 1
 function isNonCompositeNaturalNumber(n){
   let prime=true
   for(let i of stepper(0,n-1)){
@@ -46,6 +52,8 @@ function* nonCompositeNaturalNumbersGenerator(start,limit){
     if(isNonCompositeNaturalNumber(n))
       yield n
 }
+
+// utility functions
 
 function* stepper(start=0, limit=NaN, step=1){
   function continueIf(i){
