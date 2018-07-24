@@ -1,47 +1,31 @@
-
-findSum(15)
+findSum(17)
+findSum(17,stepper)
 busyStop()
-
-// NCNNs stands for "non-composite natural numbers"
-
-/*
-0=0
-1=1
-2=1+1
-3=2+1
-4=2+2
-5=3+2
-6=3+3
-7=5+2
-8=5+3
-9=5+3+1
-10=5+5
-11=7+3+1
-12=7+5
-13=11+2
-14=11+3
-15=11+3+1
-...
-etcetera
-*/
 
 // algorithm implementation for showing that:
 /* "every natural number starting from 2 can be obtained 
- as sum of non-composite natural numbers (NCNNs)
+ as sum of "non-composite natural numbers" (NCNNs)
  in some way (e.g. you could recurse to have shown more ways)".
  Non-composite natural numbers (NCNNs) are a set
  of numbers very similar to the set of prime
- numbers but it includes 0 and 1.
+ numbers but this set includes 0 and 1.
  I highlight this given the definition of primes starting from 2.
  */
-function findSum(limit=NaN,filterFunction=isNonCompositeNaturalNumber){
+function findSum(
+    limit=NaN,
+    generator=nonCompositeNaturalNumbersGenerator,
+    filterFunction=isNonCompositeNaturalNumber
+  ){
   print('findSum() limit set to',limit)
+  print('findSum() generator set to',generator.name)
+  print('findSum() filterFunction set to',filterFunction.name)
+
   // natural numbers filtered by the filter function
   // (default: non-composite natural numbers)
   let start=0
   let numbers=[]
   // (optionally) stop encountering given limit in stepping (don't stop otherwise)
-  for(let n of stepper(start,limit)){
+  for(let n of generator(start,limit)){
     if(filterFunction(n))
       numbers.push(n)
     let decremented=n

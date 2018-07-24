@@ -3,9 +3,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=2">
 
 <title>demo of sums_of_non_composites.js</title>
-<div>demo of sums_of_non_composites.js</div>
-<input id="number" type="number" value="15" placeholder="limit in stepping"><button onclick="document.all.print_output.innerHTML='';findSum(parseInt(document.all.number.value))">findSum()</button>
-
+<div>demo of <a href="sums_of_non_composites.js">sums_of_non_composites.js</a></div>
+stop at: <input id="number" type="number" value="17" placeholder="limit in stepping"> <br>
+<button onclick="outputFindSum(stepper)">findSum() naturals</button>
+<button onclick="outputFindSum(nonCompositeNaturalNumbersGenerator)">findSum() non-composites</button>
+<hr>
 <!-- printing -->
 <div id="print_output"></div>
 <script>
@@ -16,3 +18,11 @@ function p(...params){
 
 <!--the program to run -->
 <script src="sums_of_non_composites.js"></script>
+
+<script>
+function outputFindSum(generator=stepper){
+    document.all.print_output.innerHTML=''
+    let limit=parseInt(document.all.number.value)
+    findSum(limit,generator)
+}
+</script>
