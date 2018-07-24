@@ -1,9 +1,32 @@
 // (optionally) stop encountering given limit in stepping (don't stop otherwise)
-let limit_to_stop_at=10
-NCNNSum(limit_to_stop_at) // NCNNs stands for "non-composite natural numbers"
+let limit_to_stop_at=15
+findSum(limit_to_stop_at)
+
+// NCNNs stands for "non-composite natural numbers"
+
+/*
+0=0
+1=1
+2=1+1
+3=2+1
+4=2+2
+5=3+2
+6=3+3
+7=5+2
+8=5+3
+9=5+3+1
+10=5+5
+11=7+3+1
+12=7+5
+13=11+2
+14=11+3
+15=11+3+1
+...
+etcetera
+*/
 
 // algorithm implementation for showing that:
-/* "every natural number >1 can be obtained 
+/* "every natural number starting from 2 can be obtained 
  as sum of non-composite natural numbers (NCNNs)
  in some way (e.g. you could recurse to have shown more ways)".
  Non-composite natural numbers (NCNNs) are a set
@@ -11,31 +34,40 @@ NCNNSum(limit_to_stop_at) // NCNNs stands for "non-composite natural numbers"
  numbers but it includes 0 and 1.
  I highlight this given the definition of primes starting from 2.
  */
-function NCNNSum(limit=NaN){
-  let ncnn=[1]
+function findSum(limit=NaN,filterFunction=isNonCompositeNaturalNumber){
+  // natural numbers filtered by the filter function
+  // (default: non-composite natural numbers)
+  let start=0
+  let numbers=[]
   // (optionally) stop encountering given limit in stepping (don't stop otherwise)
-  for(let n of stepper(2,limit)){
-    if(isNonCompositeNaturalNumber(n))
-      ncnn.push(n)
-    let dec=n
-    let add=[]
-    for(let i=ncnn.length-2;i>=0;i--){
-      while(ncnn[i]<=dec && dec!=0){
+  for(let n of stepper(start,limit)){
+    if(filterFunction(n))
+      numbers.push(n)
+    let decremented=n
+    let addends=[]
+    for(let i=numbers.length-2;i>=0;i--){
+      while(numbers[i]<=decremented && decremented!=0){
         // decrement to find the numbers to sum up
-        dec-=ncnn[i]
-        add.push(ncnn[i])
+        decremented-=numbers[i]
+        if(numbers[i]==0)
+          break
+        addends.push(numbers[i])
       }
     }
-    // safety check (optional)
-    if(n!=sum(add)){
-      print('wrong sum')
-      break
+    if(addends.length==0){
+      print('no addends found for',n)
+    }else{
+      // safety check (optional)
+      if(n!=sum(addends)){
+        print('wrong sum',n,addends)
+        break
+      }
+      print(n+'='+addends.join('+'))
     }
-    print(n+'='+add.join('+'))
   }
 }
 
-// like: isPrime but includes 0 and 1
+// similato to isPrime(n) but includes 0 and 1 in its set of valid numbers
 function isNonCompositeNaturalNumber(n){
   let prime=true
   for(let i of stepper(0,n-1)){
