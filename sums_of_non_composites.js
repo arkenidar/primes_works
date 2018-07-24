@@ -1,6 +1,8 @@
 // (optionally) stop encountering given limit in stepping (don't stop otherwise)
 let limit_to_stop_at=15
 findSum(limit_to_stop_at)
+// added stop() to prevent process from closing
+stop()
 
 // NCNNs stands for "non-composite natural numbers"
 
@@ -35,6 +37,7 @@ etcetera
  I highlight this given the definition of primes starting from 2.
  */
 function findSum(limit=NaN,filterFunction=isNonCompositeNaturalNumber){
+  print('limit set to',limit)
   // natural numbers filtered by the filter function
   // (default: non-composite natural numbers)
   let start=0
@@ -107,3 +110,5 @@ function sum(array){
   const reducer=(accumulator, currentValue) => accumulator + currentValue
   return array.reduce(reducer)
 }
+
+function stop(){ print('program is stopped'); while(true){} }
