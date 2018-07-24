@@ -1,8 +1,14 @@
 NCNNSum(10)
 
-// algorithm for showing that:
+// algorithm implementation for showing that:
 /* "every natural number >1 can be obtained 
- as sum of non-composite natural numbers (NCNNs) of some kind" */
+ as sum of non-composite natural numbers (NCNNs)
+ in some way (e.g. you could recurse to have shown more ways)".
+ Non-composite natural numbers (NCNNs) are a set
+ of numbers very similar to the set of prime
+ numbers but it includes 0 and 1.
+ I highlight this given the definition of primes starting from 2.
+ */
 function NCNNSum(limit=NaN){
   var ncnn=[1]
   for(let n of stepper(2,limit)){
