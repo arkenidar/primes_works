@@ -1,4 +1,4 @@
-NCNNSum(10000)
+NCNNSum(10)
 
 // algorithm for showing that:
 /* "every natural number >=3 can be obtained 
@@ -10,7 +10,7 @@ function NCNNSum(limit=NaN){
       ncnn.push(n)
     let dec=n
     let add=[]
-    for(let i=(ncnn.length-1)-((n>1)?1:0);i>=0;i--){
+    for(let i=ncnn.length-2;i>=0;i--){
       while(ncnn[i]<=dec && dec!=0){
         dec-=ncnn[i]
         add.push(ncnn[i])
