@@ -1,6 +1,17 @@
-findSum(17)
-findSum(17,stepper)
-busyStop()
+// initalizations
+let continuation=()=>print('end')
+let timeoutId=null
+
+//here the program starts
+//demoFindSum()
+
+function demoFindSum(){
+  continuation=()=>{
+    continuation=()=>print('end')
+    findSum(8,nonCompositeNaturalNumbersGenerator)}
+  findSum(8,naturalNumbersGenerator)  
+  //busyStop()
+}
 
 // algorithm implementation for showing that:
 /* "every natural number starting from 2 can be obtained 
@@ -13,7 +24,7 @@ busyStop()
  */
 function findSum(
     limit=NaN,
-    generator=nonCompositeNaturalNumbersGenerator,
+    generator=naturalNumbersGenerator,
     filterFunction=isNonCompositeNaturalNumber
   ){
   print('findSum() limit set to',limit)
@@ -22,10 +33,21 @@ function findSum(
 
   // natural numbers filtered by the filter function
   // (default: non-composite natural numbers)
-  let start=0
-  let numbers=[]
+  let start=2
+  let numbers=[0,1]
   // (optionally) stop encountering given limit in stepping (don't stop otherwise)
-  for(let n of generator(start,limit)){
+  if(typeof window=='undefined'){
+    for(let n of generator(start,limit))
+      if(findSumN(n)=='stop') break
+    continuation()
+  }else{
+    let skip={
+      stepper: (n)=>false,
+      nonCompositeNaturalNumbersGenerator: (n)=>!isNonCompositeNaturalNumber(n),
+    }
+    eventLoopStepper(findSumN,continuation,start,limit,skip[generator.name])
+  }
+  function findSumN(n){
     if(filterFunction(n))
       numbers.push(n)
     let decremented=n
@@ -40,22 +62,37 @@ function findSum(
       }
     }
     if(addends.length==0){
-      print('no addends found for',n)
+      print(n,' no addends found for',n)
     }else{
       // safety check (optional)
       if(n!=sum(addends)){
         print('wrong sum',n,addends)
-        break
+        return 'stop'
       }
       print(n+'='+addends.join('+'))
     }
+    return numbers
   }
+}
+
+// stepper loop harmonized with event-loop
+function eventLoopStepper(block=console.log,continuation=()=>{},
+    start=0,limit=NaN,skip=(x)=>false,increment=1){
+  if(isNaN(limit)||start<=limit){
+      let retval
+      if(!skip(start)) retval=block(start)
+      if(retval!='stop')
+        // call stack is not filled (event loop is used instead)
+        timeoutId=setTimeout(()=>eventLoopStepper(block,continuation,
+          start+increment,limit,skip,increment))
+      else continuation()
+  }else continuation()
 }
 
 // similato to isPrime(n) but includes 0 and 1 in its set of valid numbers
 function isNonCompositeNaturalNumber(n){
   let prime=true
-  for(let i of stepper(0,n-1)){
+  for(let i of naturalNumbersGenerator(0,n-1)){
     if(n%i==0 && i!=1){
       prime=false
       break
@@ -65,14 +102,14 @@ function isNonCompositeNaturalNumber(n){
 }
 
 function* nonCompositeNaturalNumbersGenerator(start,limit){
-  for(let n of stepper(start,limit))
+  for(let n of naturalNumbersGenerator(start,limit))
     if(isNonCompositeNaturalNumber(n))
       yield n
 }
 
 // utility functions
 
-function* stepper(start=0, limit=NaN, step=1){
+function* naturalNumbersGenerator(start=0, limit=NaN, step=1){
   function continueIf(i){
     return i<=limit || isNaN(limit)
   }
@@ -80,6 +117,7 @@ function* stepper(start=0, limit=NaN, step=1){
     return limit>=start || isNaN(limit)
   }
   if(!validLimit()) return
+  // WARNING: a for loop is not harmonized with event-loop, unless made so!
   for(let i=start; continueIf(i); i+=step)
     yield i
 }

@@ -1,0 +1,16 @@
+<!doctype html>
+<title>stepper loop harmonized with event-loop</title>
+<meta charset="utf8">
+<meta name="viewport" content="width=device-width, initial-scale=2">
+<div id="content"></div>
+<script>
+// stepper loop harmonized with event-loop
+function eventLoopStepper(block=console.log,n=0,end=NaN,increment=1){
+    if(isNaN(end) || n<=end){
+        block(n)
+        // call stack is not filled (event loop is used instead)
+        setTimeout(()=>eventLoopStepper(block,n+increment,end,increment))
+    }
+}
+eventLoopStepper((n)=>document.all.content.innerHTML+=n+' ',1,10)
+</script>

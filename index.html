@@ -5,7 +5,7 @@
 <title>demo of sums_of_non_composites.js</title>
 <div>demo of <a href="sums_of_non_composites.js">sums_of_non_composites.js</a></div>
 stop at: <input id="number" type="number" value="17" placeholder="limit in stepping"> <br>
-<button onclick="outputFindSum(stepper)">findSum() naturals</button>
+<button onclick="outputFindSum(naturalNumbersGenerator)">findSum() naturals</button>
 <button onclick="outputFindSum(nonCompositeNaturalNumbersGenerator)">findSum() non-composites</button>
 <hr>
 <!-- printing -->
@@ -20,8 +20,13 @@ function p(...params){
 <script src="sums_of_non_composites.js"></script>
 
 <script>
-function outputFindSum(generator=stepper){
+function outputFindSum(generator){
+    // clear timeout to stop other process
+    clearTimeout(timeoutId)
+    // clear screen
     document.all.print_output.innerHTML=''
+
+    // compute
     let limit=parseInt(document.all.number.value)
     findSum(limit,generator)
 }
