@@ -3,14 +3,43 @@ let continuation=()=>print('end')
 let timeoutId=null
 
 //here the program starts
-//demoFindSum()
+//demoFindSum() // if you use this don't simply call sequentialTasks(lines)
 
 function demoFindSum(){
   continuation=()=>{
     continuation=()=>print('end')
     findSum(8,nonCompositeNaturalNumbersGenerator)}
-  findSum(8,naturalNumbersGenerator)  
+  findSum(8,naturalNumbersGenerator)
   //busyStop()
+}
+let nextId=0
+let lines2=[
+  ()=>eventLoopStepper((n)=>write(n+' '),()=>nextId++,1,150),
+  ()=>{print('end');nextId++},
+  ()=>eventLoopStepper((n)=>write(n+' '),()=>nextId++,1,10),
+  ()=>{print('end');nextId++},
+  //()=>nextId=null, // unnecessary but left as an example of an option of use
+]
+continuation=()=>nextId++
+let lines=[
+  ()=>findSum(8,naturalNumbersGenerator),
+  //()=>nextId=null, // comment this
+  ()=>findSum(8,nonCompositeNaturalNumbersGenerator),
+  //...lines2 // this is a better way of putting lines2 to execution
+]
+sequentialTasks(lines)
+//sequentialTasks(lines2) // symbolic use, literal use would be wrong
+function sequentialTasks(lines){
+    let currentId=null
+    let intervalId=setInterval(select)
+    function select(){
+        if(nextId!=currentId && nextId in lines){
+            currentId=nextId
+            lines[currentId]()
+        }else if(!(nextId in lines)){
+          clearInterval(intervalId)
+        }
+    }
 }
 
 // algorithm implementation for showing that:
@@ -125,6 +154,13 @@ function* naturalNumbersGenerator(start=0, limit=NaN, step=1){
 function print(...args){
   if(typeof p!='undefined')
     p(...args)
+  else if(typeof console!='undefined')
+    console.log(...args)
+}
+
+function write(...args){
+  if(typeof w!='undefined')
+    w(...args)
   else if(typeof console!='undefined')
     console.log(...args)
 }

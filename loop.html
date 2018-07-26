@@ -4,13 +4,38 @@
 <meta name="viewport" content="width=device-width, initial-scale=2">
 <div id="content"></div>
 <script>
+function write(string){
+    document.all.content.innerHTML+=string
+}
+let nextId=0
 // stepper loop harmonized with event-loop
 function eventLoopStepper(block=console.log,n=0,end=NaN,increment=1){
     if(isNaN(end) || n<=end){
         block(n)
         // call stack is not filled (event loop is used instead)
         setTimeout(()=>eventLoopStepper(block,n+increment,end,increment))
+    }else{
+        // end
+        nextId++
     }
 }
-eventLoopStepper((n)=>document.all.content.innerHTML+=n+' ',1,10)
+let lines=[
+    ()=>eventLoopStepper((n)=>write(n+' '),1,150),
+    ()=>{write('end<br>');nextId++},
+    ()=>eventLoopStepper((n)=>write(n+' '),1,10),
+    ()=>{write('end<br>');nextId++},
+    ()=>{alert('!!!');nextId++},
+    ()=>eventLoopStepper((n)=>write('. '))
+]
+sequentialTasks(lines)
+function sequentialTasks(lines){
+    let currentId=null
+    setInterval(select)
+    function select(){
+        if(nextId!=currentId && nextId in lines){
+            currentId=nextId
+            lines[currentId]()
+        }
+    }
+}
 </script>
