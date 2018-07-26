@@ -1,4 +1,4 @@
-// initalizations
+// initializations
 let continuation=()=>print('end')
 let timeoutId=null
 
@@ -118,7 +118,7 @@ function eventLoopStepper(block=console.log,continuation=()=>{},
   }else continuation()
 }
 
-// similato to isPrime(n) but includes 0 and 1 in its set of valid numbers
+// similar to isPrime(n) but includes 0 and 1 in its set of valid numbers
 function isNonCompositeNaturalNumber(n){
   let prime=true
   for(let i of naturalNumbersGenerator(0,n-1)){
